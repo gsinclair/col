@@ -19,6 +19,7 @@ D "Simple formatting (single string)" do
   D "red bold" do
     Eq Col["string"].rb.to_s,  "string".red.bold
     Eq Col["string"].fmt(:rb), "string".red.bold
+    Eq (Col["string"].fmt [:red, :bold]), "string".red.bold
   end
   D "bold" do
     Eq Col["string"]._b.to_s,  "string".bold
@@ -29,7 +30,6 @@ D "Simple formatting (single string)" do
     Eq Col["string"].fmt(:B),  "string".black
   end
 end
-
 
 D "General formatting (multiple strings)" do
   D "example 1" do
@@ -50,7 +50,6 @@ D "General formatting (multiple strings)" do
     str1 = Col["one","two"].fmt "y,r"
     expected = "one".yellow + "two".red
     Eq str1, expected
-    Eq (Col["one","two"].fmt "y,r"), ("one".yellow + "two".red)
   end
   D "including strings where no formatting is done" do
     name, age = "Peter", 14
@@ -109,21 +108,24 @@ D "More complex formatting (on_red, strikethrough, italic, dark, negative, ...)"
     Eq str1, expected
     Eq str2, expected
   end
+end  # "More complex formatting..."
+
+D ":_ (do-nothing) format specifiers" do
+  Eq Col["..."].fmt(:_), "..."
+  Eq Col["..."].fmt('_'), "..."
+  Eq Col["abc","123"].fmt(:_, :_), "abc123"
+  Eq Col["abc","123"].fmt('_,_'), "abc123"
+  D "totally empty arguments" do
+    Eq Col[].fmt(), ""
+  end
 end
 
-xD "Esoteric options" do
+D "Esoteric options" do
   D "italic,strikethrough,blink" do
     D "separate" do
-      D "in full" do
-        str1 = Col["one","two","three"].fmt(:italic, :strikethrough, :blink)
-        expected = "one".italic + "two".strikethrough + "three".blink
-        Eq str1, expected
-      end
-      D "abbreviated" do
-        str1 = Col["one","two","three"].fmt(:it, :str, :bli)
-        expected = "one".italic + "two".strikethrough + "three".blink
-        Eq str1, expected
-      end
+      str1 = Col["one","two","three"].fmt(:italic, :strikethrough, :blink)
+      expected = "one".italic + "two".strikethrough + "three".blink
+      Eq str1, expected
     end
     D "combined" do
       # one string, several symbols
@@ -146,12 +148,39 @@ D "Verbose specification" do
   end
 end
 
+D "Col.inline" do
+  D "with correct # arguments" do
+    str1 = Col.inline(
+      "foo", :blue,
+      "bar", :rb,
+      12345, [:white, :negative],
+      "qux", :_
+    )
+    expected = "foo".blue + "bar".red.bold + "12345".white.negative + "qux"
+    Eq str1, expected
+  end
+  D "with incorrect # arguments" do
+    E(Col::Error) do
+      Col.inline( "foo", :blue, "bar", :red, "quux" )
+    end
+    Mt Attest.exception.message, /even/i
+  end
+end
+
 D "Object properties" do
   D "Col[...].green.on_white is still a Col object" do
     c = Col["..."].green
     Ko c, Col
     c = Col["..."].green.on_white
     Ko c, Col
+  end
+  D "other methods, like Col[...].rb, produce a String object" do
+    str = Col["foo"].yb
+    Ko str, String
+    str = Col["foo"].fmt [:yellow, :italic, :strikethrough, :on_green]
+    Ko str, String
+    str = Col["one","two"].fmt :g_ow, :yb
+    Ko str, String
   end
   D "a Col object is printable (implements to_s)" do
     c = Col["one","two","three"]

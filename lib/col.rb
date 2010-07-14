@@ -13,6 +13,17 @@ class Col
     Col.new(*args)
   end
 
+  def Col.inline(*args)
+    unless args.size.even?
+      raise Col::Error, "Col.inline requires an even number of arguments"
+    end
+    String.new.tap { |result|
+      args.each_slice(2) do |string, format|
+        result << Col(string.to_s).fmt(format)
+      end
+    }
+  end
+
   # e.g.
   #   Col("one", "two", "three", "four").fmt "rb,y,cb,_b"
   #     # same as:
@@ -28,10 +39,14 @@ class Col
   end
 
   def method_missing(message, *args, &block)
-    if args.empty?
-      Col.new( self.fmt(message) )
-    else
+    unless args.empty?
       super   # We're not interested in a message with arguments; NoMethodError
+    end
+    if Col::DB.method?(message)
+      Col.new( self.fmt(message) )   # Col["..."].yellow -> Col
+                                     #  to allow Col["..."].yellow.bold
+    else
+      self.fmt(message)              # Col["..."].gbow   -> String
     end
   end
 end
@@ -52,17 +67,7 @@ class Col::Formatter
     check_correct_number_of_arguments(strings, *spec)
     @strings = strings
     @format_spec = normalise_format_spec(*spec)
-    debug "Col::Formatter#initialize"
-    debug "  @strings     = #{@strings.inspect}"
-    debug "  @format_spec = #{@format_spec.inspect}"
   end
-
-###  def result
-###    @strings.zip(@format_spec).map { |string, spec|
-###      # spec is an array of methods to apply to string
-###      spec.inject(string) { |acc, mth| acc.send(mth) }
-###    }.join
-###  end
 
   def result
     unless @strings.size == @format_spec.size
@@ -83,8 +88,7 @@ class Col::Formatter
   def decorated_string(string, spec)
     raise Col::Error unless string.is_a? String and spec.is_a? Array \
                         and spec.all? { |e| e.is_a? Symbol }
-    string.extend(Term::ANSIColor)
-    spec.inject(string) { |str, symbol| str.send(symbol) }
+    spec.inject(string) { |str, symbol| Term::ANSIColor.send(symbol, str) }
   end
 
   #
@@ -147,8 +151,8 @@ class Col::Formatter
       normalise_format_spec(*spec)
     else
       # We have an array of items.  We need to treat each item individually and
-      # put the items together.
-      spec.map { |item| normalise_item(item) }
+      # put the items together.  We remove nil elements.
+      spec.map { |item| normalise_item(item) }.compact
     end
   end
 
@@ -167,6 +171,10 @@ class Col::Formatter
   #     :__ob              [:on_blue]
   #     "gsow"             [:green, :strikethrough, :on_white]
   #     "_noB"             [:negative, :on_black]
+  #     :_                 []
+  #     [:_]               []
+  #     [:_, :_]           []
+  #       (etc.)
   def normalise_item(item)
     case item
     when Symbol then normalise_string(item.to_s)
@@ -178,8 +186,9 @@ class Col::Formatter
 
   # Input:  array of symbols
   # Result: array of symbols, each of which is a legitimate ANSIColor method
-  # Note:   either the output is the same as the input, or an error is raised
+  # Note:   underscores and nil items are removed from the array
   def normalise_array(array)
+    array.reject! { |x| x.nil? or x == :_ or x == '_' }
     invalid_items = array.select { |item| not Col::DB.method? item }
     case invalid_items.size
     when 0 then return array
@@ -198,9 +207,12 @@ class Col::Formatter
   #      gsow            [:green, :strikethrough, :on_white]
   #      _b              [:bold]
   #      __ob            [:on_blue]
+  #      _               []
   def normalise_string(string)
     # Is it already one of the methods?  If so, easy.  If not, split and parse.
-    if Col::DB.method? string
+    if string == "_"
+      []
+    elsif Col::DB.method? string
       [ string.intern ]
     elsif (1..4).include? string.size         # say: "g", "gb", "gbow"
       color, style, backg = extract(string)
