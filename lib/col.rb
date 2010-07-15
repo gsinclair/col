@@ -1,5 +1,10 @@
 require 'rubygems'
 require 'term/ansicolor'
+begin
+  require 'win32console'
+  include Win32::Console::ANSI
+rescue LoadError
+end
 
 # --------------------------------------------------------------------------- #
 

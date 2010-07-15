@@ -21,7 +21,7 @@ Col -- high-level console color formatting
 
     puts Col("Hello world!").red.bold
     puts Col("Hello world!").rb
-    puts Col("Hello world!").fmt :red, :bold
+    puts Col("Hello world!").fmt [:red, :bold]
     puts Col("Hello world!").fmt :rb
 
     puts Col("Hello ", "world!").fmt :red, :green
@@ -36,7 +36,8 @@ Col -- high-level console color formatting
     puts Col("Hello ", "world!").fmt [:blue, :on_yellow], [:on_green]
     puts Col("Hello ", "world!").fmt "b_oy,__og"
 
-    puts Col.inline( "Hello ", :red, "world!", :blue)
+    puts Col.inline( "Hello ", :red, "world!", :blue )
+
     puts Col.inline(
       "Hello ",   [:red, :bold, :on_white],
       "world!",   :b_oy
@@ -321,15 +322,15 @@ when using Term::ANSIColor.
 
 ### Project details
 
-* Author: Gavin Sinclair (user name: gsinclair; mail server: gmail.com)
+* Author: Gavin Sinclair (user name: `gsinclair`; mail server: `gmail.com`)
 * Date: July 2010
 * Licence: MIT licence
 * Project homepage: [http://gsinclair.github.com/col.html][home]
 * Source code: [http://github.com/gsinclair/col][code]
 * Documentation: project homepage or README on the Github page
 
-[home]: http://github.com/gsinclair/col
-[code]: http://gsinclair.github.com/col.html
+[home]: http://gsinclair.github.com/col.html
+[code]: http://github.com/gsinclair/col
 
 ### Future plans
 
