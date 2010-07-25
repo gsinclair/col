@@ -5,8 +5,6 @@ title: Col
 
 # Col
 
-**Status: awaiting release (July 2010)**
-
 * This list will contain the table of contents
 {:toc}
 
@@ -294,6 +292,20 @@ For example:
 
 {% endhighlight %}
 
+### Windows users
+
+People using a native Windows build of Ruby in the Windows console should
+include the following code in their program:
+
+{% highlight ruby %}
+
+    require 'win32console'           # win32console gem
+    include Win32::Console::ANSI
+
+{% endhighlight %}
+
+This does not apply to Cygwin users.
+
 ## Limitations
 
 Col uses [Term::ANSIColor][1] to access ANSI codes, and offers access to all of
@@ -309,6 +321,10 @@ environment has been tested!
 
 
 ## Endnotes
+
+### History
+
+July 25 2010: Version 1.0 released.
 
 ### Credits
 
