@@ -18,6 +18,24 @@ class Col
     Col.new(*args)
   end
 
+  COLORED_REGEXP = /\e\[                             # opening character sequence
+                         (?: [34][0-7] | [0-9] ) ?   # optional code
+                     ( ; (?: [34][0-7] | [0-9] ))*   # more optional codes
+                    m                                # closing character
+                   /x
+
+  # Convenience method to remove color codes from a string.
+  # Also available as Col.plain.
+  def Col.uncolored(string)
+    string.gsub(COLORED_REGEXP, '')
+  end
+
+  # Convenience method to remove color codes from a string.
+  # Also available as Col.uncolored.
+  def Col.plain(string)
+    string.gsub(COLORED_REGEXP, '')
+  end
+
   def Col.inline(*args)
     unless args.size.even?
       raise Col::Error, "Col.inline requires an even number of arguments"

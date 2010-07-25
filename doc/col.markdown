@@ -283,26 +283,28 @@ For example:
 
 {% endhighlight %}
 
+### Removing color codes from a string
+
+`Col.uncolored` or `Col.plain` will remove any ANSI color codes from a string.
+
+{% highlight ruby %}
+
+    str = Col["foo"].yellow.bold.on_red.to_s
+    Col.uncolored(str) == "foo"                 # true
+
+{% endhighlight %}
 
 ## Limitations
 
 Col uses [Term::ANSIColor][1] to access ANSI codes, and offers access to all of
-its codes/features _except_ `reset` and `uncolored`.  There is no way to uncolor
-a string using Col; there should be no need to!  Nonetheless, by using Col you
-are indirectly using Term::ANSIColor and can therefore include code like
-
-{% highlight ruby %}
-
-    str = Term::ANSIColor.uncolored(str)
-
-{% endhighlight %}
+its codes/features _except_ `reset`.
 
 [1]: http://flori.github.com/term-ansicolor/
 
 The author of this library never applies anything other than a foreground color
 and 'bold', so everything else is tested only in unit tests, not in practice.
 Furthermore, the author has no knowledge of terminal issues and is just happy to
-see a few colors appear in his Ruby 1.8 (Cygwin) programs -- no other
+see a few colors appear in his Ruby 1.8 and 1.9 (Cygwin) programs -- no other
 environment has been tested!
 
 
@@ -327,7 +329,7 @@ when using Term::ANSIColor.
 * Licence: MIT licence
 * Project homepage: [http://gsinclair.github.com/col.html][home]
 * Source code: [http://github.com/gsinclair/col][code]
-* Documentation: project homepage or README on the Github page
+* Documentation: [project homepage](home)
 
 [home]: http://gsinclair.github.com/col.html
 [code]: http://github.com/gsinclair/col
@@ -335,8 +337,9 @@ when using Term::ANSIColor.
 ### Future plans
 
 Hopefully nothing in the code will need to change.  Bug fixes will be released
-as version 1.0.1, 1.0.2 etc.  If any requests are made for enhanced
-functionality, they will be 1.1.0, 1.2.0 etc.
+as version 1.0.1, 1.0.2 etc.  If any extra functionality is needed, it will be
+in 1.1.0, 1.2.0 etc.
 
 One possible area of enhancement is to provide a way of disabling colored output
-when outputing to a pipe.
+when outputing to a pipe.  (I believe Term::ANSIColor may already do that.)
+(Sometimes, however, colored output in a pipe is desirable, viz. git.)

@@ -167,6 +167,21 @@ D "Col.inline" do
   end
 end
 
+D "Col.uncolored(string)" do
+  str = Col["foo"].yellow.bold.on_red.to_s
+  Eq Col.uncolored(str), "foo"
+  Eq Col.plain(str), "foo"
+  str = Col["foo","bar"].fmt('rboc,_i')
+  Eq Col.uncolored(str), "foobar"
+  Eq Col.plain(str), "foobar"
+  str = "\e[1;4;37;41mfoo\e[0m"
+  Eq Col.uncolored(str), "foo"
+  Eq Col.plain(str), "foo"
+  str = "foo"
+  Eq Col.uncolored(str), "foo"
+  Eq Col.plain(str), "foo"
+end
+
 D "Object properties" do
   D "Col[...].green.on_white is still a Col object" do
     c = Col["..."].green
