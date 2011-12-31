@@ -61,6 +61,14 @@ D "General formatting (multiple strings)" do
   end
 end
 
+D "Method names, like Col('foo').red.bold" do
+  Eq Col::VERSION, "1.0.1a"
+  Ko Col('foo').red, Col
+  Ko Col('foo').red.bold, Col
+  Eq Col('foo').red.bold.to_str, "foo".red.bold
+  Eq Col['foo'].red.bold.to_str, "foo".red.bold
+end
+
 D "More complex formatting (on_red, strikethrough, italic, dark, negative, ...)" do
   D "all styles (part 1)" do
     str1 = Col["one","two","three","four","five"].fmt(:_b, :_d, :_i, :_u, :_U)
@@ -183,6 +191,10 @@ D "Col.uncolored(string)" do
 end
 
 D "Object properties" do
+  D "Col[...] and Col(...) produce a Col object" do
+    Ko Col['...'], Col
+    Ko Col('...'), Col
+  end
   D "Col[...].green.on_white is still a Col object" do
     c = Col["..."].green
     Ko c, Col

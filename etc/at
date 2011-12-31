@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 attest=../attest
 exec ruby -rubygems -Ilib -I${attest}/lib ${attest}/bin/attest $*

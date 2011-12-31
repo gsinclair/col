@@ -1,7 +1,7 @@
 require 'rake'  # FileList
 Gem::Specification.new do |spec|
   spec.name = "col"
-  spec.version = "1.0.0"
+  spec.version = "1.0.1a"
   spec.summary = "high-level console color formatting"
   spec.description = <<-EOF
     Console color formatting library with abbreviations (e.g. 'rb' for

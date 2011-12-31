@@ -4,6 +4,9 @@ require 'term/ansicolor'
 # --------------------------------------------------------------------------- #
 
 class Col
+
+  VERSION = "1.0.1a"
+
   # args: array of strings (to_s is called on each)
   def initialize(*args)
     @strings = args.map { |a| a.to_s }
@@ -54,6 +57,11 @@ class Col
 
   def to_s
     @strings.join
+  end
+
+  # Works nicely with puts. E.g. puts Col("...").red.bold
+  def to_str
+    to_s
   end
 
   def method_missing(message, *args, &block)
