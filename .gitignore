@@ -1,3 +1,4 @@
 *.gem
 debug.log
 tags
+Gemfile.lock

@@ -324,6 +324,7 @@ environment has been tested!
 
 ### History
 
+January 1 2012: Version 1.0.1 released (minor bug fix for 1.9.3)
 July 25 2010: Version 1.0 released.
 
 ### Credits
@@ -352,9 +353,9 @@ when using Term::ANSIColor.
 
 ### Future plans
 
-Hopefully nothing in the code will need to change.  Bug fixes will be released
-as version 1.0.1, 1.0.2 etc.  If any extra functionality is needed, it will be
-in 1.1.0, 1.2.0 etc.
+Version 1.0.0 was released with no plans for future releases.  Version 1.0.1
+fixed a bug (18 months later), and still there are no plans for further
+functionality.
 
 One possible area of enhancement is to provide a way of disabling colored output
 when outputing to a pipe.  (I believe Term::ANSIColor may already do that.)

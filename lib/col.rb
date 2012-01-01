@@ -1,11 +1,10 @@
-require 'rubygems'
 require 'term/ansicolor'
+require 'col/version'
 
 # --------------------------------------------------------------------------- #
 
 class Col
 
-  VERSION = "1.0.1a"
 
   # args: array of strings (to_s is called on each)
   def initialize(*args)
