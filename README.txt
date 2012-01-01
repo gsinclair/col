@@ -4,7 +4,7 @@ If you want a dash of color in your Ruby console program, use Term::ANSIColor.
 If your color formatting requirements are more complicated, use Col.
 Col provides as much convenience as possible without modifying builtin classes.
 
-Synopsis
+=== SYNOPSIS
 
     require 'col'
 

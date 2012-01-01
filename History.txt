@@ -1,0 +1,10 @@
+=== 1.0.1 / 2012-01-01
+
+* 1 minor enhancement:
+
+  * Col#to_str implemented to play nicely with puts
+    (problem became apparent with Ruby 1.9.3?)
+
+=== 1.0.0 / 2010-07-25
+
+* First release
