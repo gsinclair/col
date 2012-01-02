@@ -62,7 +62,6 @@ D "General formatting (multiple strings)" do
 end
 
 D "Method names, like Col('foo').red.bold" do
-  Eq Col::VERSION, "1.0.1a"
   Ko Col('foo').red, Col
   Ko Col('foo').red.bold, Col
   Eq Col('foo').red.bold.to_str, "foo".red.bold
@@ -171,7 +170,7 @@ D "Col.inline" do
     E(Col::Error) do
       Col.inline( "foo", :blue, "bar", :red, "quux" )
     end
-    Mt Attest.exception.message, /even/i
+    Mt Whitestone.exception.message, /even/i
   end
 end
 
@@ -226,16 +225,16 @@ end
 D "Erroneous specifications" do
   D "incorrect number of arguments" do
     E(Col::Error) { Col["one","two"].fmt :b }
-    Mt Attest.exception.message, /incorrect number of arguments/i
+    Mt Whitestone.exception.message, /incorrect number of arguments/i
     E(Col::Error) { Col["one","two"].fmt(:b, :r, :g) }
-    Mt Attest.exception.message, /incorrect number of arguments/i
+    Mt Whitestone.exception.message, /incorrect number of arguments/i
     E(Col::Error) { Col["one","two"].fmt(:b, :r, :g, :cbow) }
-    Mt Attest.exception.message, /incorrect number of arguments/i
+    Mt Whitestone.exception.message, /incorrect number of arguments/i
   end
 
   D "invalid code" do
     E(Col::Error) { Col["one","two"].fmt(:T, :r) }
     E(Col::Error) { Col["one","two"].fmt "T,r" }
-    Mt Attest.exception.message, /invalid color code/i
+    Mt Whitestone.exception.message, /invalid color code/i
   end
 end

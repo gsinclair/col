@@ -5,7 +5,6 @@ require 'col/version'
 
 class Col
 
-
   # args: array of strings (to_s is called on each)
   def initialize(*args)
     @strings = args.map { |a| a.to_s }
@@ -34,14 +33,14 @@ class Col
   end
 
   def Col.inline(*args)
-    unless args.size.even?
+    unless args.size % 2 == 0    # even? breaks 1.8.6
       raise Col::Error, "Col.inline requires an even number of arguments"
     end
-    String.new.tap { |result|
-      args.each_slice(2) do |string, format|
-        result << Col(string.to_s).fmt(format)
-      end
-    }
+    result = String.new
+    Col::Utils.each_pair(args) do |string, format|
+      result << Col(string.to_s).fmt(format)
+    end
+    result
   end
 
   # e.g.
@@ -98,12 +97,12 @@ class Col::Formatter
     unless @strings.size == @format_spec.size
       raise Col::Error, "mismatching strings and specs"
     end
-    String.new.tap { |str|
-      @strings.zip(@format_spec).each do |string, spec|
-        d = decorated_string(string, spec)
-        str << d
-      end
-    }
+    result = String.new
+    @strings.zip(@format_spec).each do |string, spec|
+      d = decorated_string(string, spec)
+      result << d
+    end
+    result
   end
 
   # e.g.
@@ -347,3 +346,23 @@ class Col::DB
   end
 
 end  # Col::DB
+
+# --------------------------------------------------------------------------- #
+
+# Utility methods to enable Col to work on 1.8.6.
+class Col::Utils
+  if RUBY_VERSION < "1.8.7"
+    def self.each_pair(array)
+      a = array.dup
+      loop do
+        pair = a.slice!(0,2)
+        break if pair.empty?
+        yield pair
+      end
+    end
+  else
+    def self.each_pair(array, &block)
+      array.each_slice(2, &block)
+    end
+  end
+end

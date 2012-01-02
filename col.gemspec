@@ -25,8 +25,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency "term-ansicolor", ">= 1.0"
 
-  #s.add_development_dependency "T"
   s.add_development_dependency "bundler"
+  s.add_development_dependency "whitestone"
 
-  s.required_ruby_version = '>= 1.8.6'    # Not sure about this.
+  s.required_ruby_version = '>= 1.8.6'    # Tested.
 end

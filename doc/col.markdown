@@ -324,8 +324,11 @@ environment has been tested!
 
 ### History
 
-January 1 2012: Version 1.0.1 released (minor bug fix for 1.9.3)
-July 25 2010: Version 1.0 released.
+* 2 JAN 2012: Version 1.0.2 released (1.8.6 compatibility)
+* 2 JAN 2012: Version 1.0.1 released (minor bug fix for 1.9.3)
+* 25 JUL 25 2010: Version 1.0 released.
+
+See History.txt for more details.
 
 ### Credits
 
