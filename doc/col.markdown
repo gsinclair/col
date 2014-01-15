@@ -106,7 +106,7 @@ a format specifier.
     Col("string").fmt :red, :bold, :on_white    # -> String
     Col("string").fmt "rbow"                    # -> String
     Col("string").fmt :rbow                     # -> String
-    Col("str1", "str2").fmt :rb, gi             # -> String
+    Col("str1", "str2").fmt :rb, :gi            # -> String
 
 {% endhighlight %}
 
@@ -144,7 +144,7 @@ Incorrect use of Col results in a `Col::Error` being raised:
 {% highlight ruby %}
 
     Col("string").turquoise                    # non-existent format
-    Col("one", "two).fmt :red, :green, :cyan   # too many arguments
+    Col("one", "two").fmt :red, :green, :cyan  # too many arguments
     Col("string").gZow                         # invalid style: Z
 
 {% endhighlight %}
@@ -322,25 +322,19 @@ environment has been tested!
 
 ## Endnotes
 
-### History
+### Motivation
 
-* 2 JAN 2012: Version 1.0.2 released (1.8.6 compatibility)
-* 2 JAN 2012: Version 1.0.1 released (minor bug fix for 1.9.3)
-* 25 JUL 25 2010: Version 1.0 released.
+I've used Term::ANSIColor many times and never sought anything more, but while
+developing [Whitestone][ws], which makes much use of console color, I wanted an
+easier way to apply color codes to groups of strings.  Additionally, being a
+unit testing library, I didn't want to add methods to the String class, the way
+I normally do when using Term::ANSIColor.
 
-See History.txt for more details.
+[ws]: http://gsinclair.github.com/whitestone.html
 
 ### Credits
 
 Florian Flank for [Term::ANSIColor][1], which I've used heavily over the years.
-
-### Motivation
-
-I've used Term::ANSIColor many times and never sought anything more, but while
-developing Attest, which makes much use of console color, I wanted an easier way
-to apply color codes to groups of strings.  Additionally, being a unit testing
-library, I didn't want to add methods to the String class, the way I normally do
-when using Term::ANSIColor.
 
 ### Project details
 
@@ -353,6 +347,14 @@ when using Term::ANSIColor.
 
 [home]: http://gsinclair.github.com/col.html
 [code]: http://github.com/gsinclair/col
+
+### History
+
+* 2 JAN 2012: Version 1.0.2 released (1.8.6 compatibility)
+* 2 JAN 2012: Version 1.0.1 released (minor bug fix for 1.9.3)
+* 25 JUL 25 2010: Version 1.0 released.
+
+See History.txt for more details.
 
 ### Future plans
 
